@@ -1,0 +1,27 @@
+server:
+  port: 9045
+
+eureka:
+  instance:
+    hostname: eureka.olymtech.com
+  client:
+    serviceUrl:
+      defaultZone: http://eureka.olymtech.com:8761/eureka/
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache:  false
+
+security:
+  user:
+    name: admin
+    password: test
