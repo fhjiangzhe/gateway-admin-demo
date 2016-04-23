@@ -3,7 +3,8 @@ server:
 
 eureka:
   instance:
-    hostname: eureka.olymtech.com
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     serviceUrl:
       defaultZone: http://eureka.olymtech.com:8761/eureka/
