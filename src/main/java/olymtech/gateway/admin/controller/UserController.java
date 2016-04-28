@@ -2,7 +2,10 @@ package olymtech.gateway.admin.controller;
 
 import client.api.UserFeign;
 import client.api.domain.User;
+import olymtech.gateway.admin.websocket.UserChatCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,13 @@ public class UserController {
 
     @Autowired
     private UserFeign userFeign;
+
+    private SimpMessagingTemplate template;
+
+    @Autowired
+    public UserController(SimpMessagingTemplate template) {
+        this.template = template;
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
