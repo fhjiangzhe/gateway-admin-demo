@@ -1,6 +1,12 @@
+server:
+  port: 9045
+
 spring:
-  application:
-    name: olymtech-gateway-admin
+  cloud:
+    config:
+      name: olymtech-gateway-admin
+      uri: http://127.0.0.1:8888
+      profile: ${config.profile:dev}
 
 
 

@@ -2,8 +2,6 @@
 <head>
     <title>Messages : View</title>
     <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/sockjs.js}"></script>
-    <script th:src="@{/js/stomp.js}"></script>
 </head>
 <body>
            <table>
@@ -31,25 +29,6 @@
 
 
 <script>
-
-    var stompClient = null;
-
-    //连接服务器的函数
-    function connect() {
-        var socket = new SockJS('/coordination');
-        stompClient = Stomp.over(socket);
-        stompClient.connect('', '', function (frame) {
-            console.log('Connected: ' + frame);
-            //用户聊天订阅
-            var coordinationId = "18";
-            stompClient.subscribe('/userChat/chat' + coordinationId, function (chat) {
-                showChat(JSON.parse(chat.body));
-            });
-
-        }, function () {
-            connect();
-        });
-    }
 
     function toSave(){
 
@@ -124,58 +103,6 @@
             }
         });
     }
-
-    var countdown=60;
-    function settime(val) {
-        if (countdown == 0) {
-            val.removeAttribute("disabled");
-            val.value="免费获取验证码";
-            countdown = 60;
-        } else {
-            val.setAttribute("disabled", true);
-            val.value="重新发送(" + countdown + ")";
-            countdown--;
-        }
-        meter = setTimeout(function() {
-            settime(val)
-        },1000)
-    }
-
-    function stop(val){
-
-        settime(val);
-
-        var input = $('#chat_input');
-        var inputValue = input.val();
-        input.val("");
-        var coordinationId = "18";
-        stompClient.send("/app/userChat", {}, JSON.stringify({ 'name': encodeURIComponent("John"),
-            'chatContent': encodeURIComponent(inputValue),
-            'coordinationId': coordinationId}));
-    }
-
-    //显示聊天信息
-    function showChat(message) {
-        if(typeof(meter) != "undefined"){
-            clearTimeout(meter);
-
-            document.getElementById("btn").removeAttribute("disabled");
-            document.getElementById("btn").value="免费获取验证码";
-            countdown = 60;
-        }
-
-        var response = document.getElementById('chat_content');
-        response.value += decodeURIComponent(message.name) + ':' + decodeURIComponent(message.chatContent) + '\n';
-        stompClient.disconnect();
-    }
-
-
-    $(function () {
-
-        connect();
-
-    });
-
 
 </script>
 

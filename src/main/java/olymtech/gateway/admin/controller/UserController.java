@@ -2,10 +2,7 @@ package olymtech.gateway.admin.controller;
 
 import client.api.UserFeign;
 import client.api.domain.User;
-import olymtech.gateway.admin.websocket.UserChatCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +22,12 @@ public class UserController {
     @Autowired
     private UserFeign userFeign;
 
-    private SimpMessagingTemplate template;
+   // private SimpMessagingTemplate template;
 
-    @Autowired
-    public UserController(SimpMessagingTemplate template) {
-        this.template = template;
-    }
+//    @Autowired
+//    public UserController(SimpMessagingTemplate template) {
+//        this.template = template;
+//    }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -49,6 +46,16 @@ public class UserController {
         List<User> all = userFeign.findAll();
         model.addAttribute("users",all);
         return "userList";
+    }
+
+    @RequestMapping(value = "/findAll",method = RequestMethod.GET)
+    @ResponseBody
+    public Map findAll(){
+        Map result = new HashMap<>();
+        result.put("state","success");
+        result.put("rows",userFeign.findAll());
+
+        return result;
     }
 
 
